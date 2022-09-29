@@ -45,7 +45,7 @@ const Navbar = () => {
   let hoverColor = "blue.400";
   const Navigate = useNavigate();
   const toast = useToast();
-  const { SignOut } = useContext(AuthContext);
+  const { SignOut, currentUser } = useContext(AuthContext);
   const loggedUserName = JSON.parse(localStorage.getItem("loginUser")) || null;
   const handleSignout = (e) => {
     SignOut();
@@ -116,9 +116,7 @@ const Navbar = () => {
         <PopoverCloseButton />
         <PopoverHeader>
           <Center mt="5" mb="5">
-            <Heading size="md">
-              Hi , {loggedUserName.firstName}
-            </Heading>
+            <Heading size="md">Hi , {loggedUserName.firstName}</Heading>
           </Center>
           <Center mb="5">
             <Heading as="h6" size="md">
@@ -171,7 +169,7 @@ const Navbar = () => {
       >
         <Container maxW="container.xl">
           <Stack direction="row">
-            <Box p="5">
+            <Box p="4">
               <Stack direction="row" spacing={8}>
                 <Link to="/">
                   <Image
@@ -181,7 +179,7 @@ const Navbar = () => {
                 </Link>
                 {isLargerThan576 ? (
                   <Menu>
-                    <MenuButton _hover={{ color: hoverColor }} fontSize={18}>
+                    <MenuButton _hover={{ color: hoverColor }} fontSize={15}>
                       More travel <ChevronDownIcon />
                     </MenuButton>
                     <Portal>
@@ -236,10 +234,10 @@ const Navbar = () => {
                   spacing={8}
                   align="center"
                   p="1"
-                  fontSize={18}
+                  fontSize={17}
                 >
-                  <Text _hover={{ color: hoverColor }}>
-                    <Link to="/language">
+                  <Text _hover={{ color: hoverColor }} >
+                    <Link to="/language" >
                       <Icon as={BiWorld} w={3.5} h={3.5} />
                       &nbsp; English
                     </Link>
