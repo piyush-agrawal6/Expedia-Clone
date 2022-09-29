@@ -8,63 +8,53 @@ import {
   Flex,
   Heading,
   useMediaQuery,
+  Select,
   useToast,
   Spinner,
 } from "@chakra-ui/react";
-import { useNavigate } from "react-router-dom";
-import { useContext } from "react";
-import { AuthContext } from "../Context/AuthContext";
-function SignUp() {
-  const [isLoading, setIsLoading] = useState(true);
-  const [userData, setUserData] = useState({
-    email: "",
-    firstName: "",
-    lastName: "",
-    password: "",
-  });
-  const { SignUp } = useContext(AuthContext);
-  const toast = useToast();
-  const Navigate = useNavigate();
-  const [isLargerThan992] = useMediaQuery("(min-width: 992px)");
 
+function ProfileEdit() {
+  const [isLoading, setIsLoading] = useState(false);
+  var currentUserData = JSON.parse(localStorage.getItem("loginUser"));
+  const BoxShadow = "base";
+  const [userData, setUserData] = useState({
+    password: currentUserData.password,
+    gender: "select a gender",
+    contact: "",
+    email: currentUserData.email,
+    firstName: currentUserData.firstName,
+    lastName: currentUserData.lastName,
+  });
+  const toast = useToast();
   useEffect(() => {
     setTimeout(() => {
       setIsLoading(false);
     }, 500);
+    if (currentUserData.password !== "")
+      setUserData({
+        password: currentUserData.password,
+        gender: currentUserData.gender,
+        contact: currentUserData.contact,
+        email: currentUserData.email,
+        firstName: currentUserData.firstName,
+        lastName: currentUserData.lastName,
+      });
   }, []);
+
+  const [isLargerThan992] = useMediaQuery("(min-width: 992px)");
+
   const onChangeInput = (e) => {
     const { id, value } = e.target;
     setUserData({ ...userData, [id]: value });
   };
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (
-      userData.email == "" ||
-      userData.firstName == "" ||
-      userData.lastName == "" ||
-      userData.password == ""
-    )
-      return toast({
-        title: "Fill all the details !!!",
-        status: "error",
-        duration: 1500,
-        isClosable: true,
-        position: "top",
-      });
-    SignUp(userData);
-    setTimeout(() => {
-      Navigate("/signin");
-    }, 2000);
-    setUserData({
-      email: "",
-      firstName: "",
-      lastName: "",
-      password: "",
-    });
+    console.log(userData);
+    localStorage.setItem("loginUser", JSON.stringify(userData));
     toast({
-      title: "Signup Successfull !!!",
+      title: "Profile Updated !!!",
       status: "success",
-      duration: 1500,
+      duration: 2000,
       isClosable: true,
       position: "top",
     });
@@ -87,22 +77,21 @@ function SignUp() {
           align="center"
           direction="column"
           textAlign="center"
-          pb={10}
-          boxShadow="base"
         >
           <Heading mt="10" as="h2" size="lg">
-            Sign Up
+            Profile Edit
           </Heading>
           <FormControl
             w={isLargerThan992 ? "30%" : "70%"}
             borderRadius="lg"
+            boxShadow={BoxShadow}
             p={"3"}
             cursor="pointer"
             mt={5}
           >
             <FormLabel htmlFor="firstName">First Name</FormLabel>
             <Input
-              mb={4}
+              mb={3}
               value={userData.firstName}
               type="text"
               id="firstName"
@@ -113,7 +102,7 @@ function SignUp() {
             />
             <FormLabel htmlFor="lastName">Last Name</FormLabel>
             <Input
-              mb={4}
+              mb={3}
               value={userData.lastName}
               type="text"
               id="lastName"
@@ -124,6 +113,7 @@ function SignUp() {
             />
             <FormLabel htmlFor="email">Email address</FormLabel>
             <Input
+              mb={3}
               value={userData.email}
               type="email"
               id="email"
@@ -132,17 +122,41 @@ function SignUp() {
               }}
               placeholder="enter email"
             />
-            <FormHelperText>We'll never share your email.</FormHelperText>
+
             <FormLabel htmlFor="password">Password</FormLabel>
             <Input
+              mb={3}
               value={userData.password}
+              type="text"
               id="password"
               onChange={(e) => {
                 onChangeInput(e);
               }}
-              type="password"
-              placeholder="enter password"
             />
+            <FormLabel htmlFor="contact">Contact</FormLabel>
+            <Input
+            mb={3}
+              value={userData.contact}
+              type="number"
+              id="contact"
+              onChange={(e) => {
+                onChangeInput(e);
+              }}
+            />
+            <FormLabel htmlFor="gender">Gender</FormLabel>
+            <Select
+              mb={3}
+              id="gender"
+              onChange={(e) => {
+                onChangeInput(e);
+              }}
+              value={userData.gender}
+            >
+              <option>select a gender</option>
+              <option value="male">Male</option>
+              <option value="female">Female</option>
+              <option value="other">Other</option>
+            </Select>
             <Button
               w="100%"
               mt={4}
@@ -161,4 +175,4 @@ function SignUp() {
   );
 }
 
-export default SignUp;
+export default ProfileEdit;
