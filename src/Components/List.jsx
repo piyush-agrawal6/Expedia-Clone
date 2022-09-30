@@ -19,11 +19,17 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { Card } from "./HotelCard";
+import { CartState } from "../Context/FavContext";
+import { useContext } from "react";
 import { citiesData } from "../Data";
 import { useParams } from "react-router-dom";
 const initialData = citiesData;
 function ListView() {
-  const [arr, setArr] = useState(initialData);
+  const {
+    state: { products },
+  } = useContext(CartState);
+  // console.log(products);
+  const [arr, setArr] = useState(products);
   const [search, setSearch] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   let { cityName } = useParams();
@@ -306,7 +312,7 @@ function ListView() {
                         elem.place == cityName.toLowerCase().trim() ||
                         elem.place == search.toLowerCase().trim()
                       )
-                        return <Card key={elem.id} data={elem} />;
+                        return <Card key={elem.id} elem={elem} />;
                     })}
                   </Flex>
                 ) : (

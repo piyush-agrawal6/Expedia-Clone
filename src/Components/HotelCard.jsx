@@ -12,19 +12,17 @@ import {
   Icon,
   useToast,
   Flex,
+  Button,
 } from "@chakra-ui/react";
-let fav = JSON.parse(localStorage.getItem("fav")) || [];
-export const Card = ({ data }) => {
-  const [isFav, setIsFav] = useState(false);
-  const [colorSet, setColorSet] = useState(false);
+import { CartState } from "../Context/FavContext";
+import { useContext } from "react";
+export const Card = ({ elem }) => {
   const BoxShadow = "base";
   const toast = useToast();
-  const handleIconClick = () => {
-    fav.push(data);
-    localStorage.setItem("fav", JSON.stringify(fav));
-    let heart = document.querySelector(".heart")
-    heart.style.backgroundColor="red"
-  };
+  const {
+    state: { cart },
+    dispatch,
+  } = useContext(CartState);
   const {
     id,
     images,
@@ -39,7 +37,7 @@ export const Card = ({ data }) => {
     review,
     rating,
     reviewCount,
-  } = data;
+  } = elem;
 
   return (
     <Flex
@@ -65,7 +63,6 @@ export const Card = ({ data }) => {
             fontWeight="semibold"
             as="h4"
             lineHeight="tight"
-            isTruncated
             fontSize={20}
             display="flex"
             justifyContent="left"
@@ -82,20 +79,47 @@ export const Card = ({ data }) => {
             mt="2"
             mb="2"
             padding="5px 10px"
+            mr={3}
           >
             {city}
           </Badge>
-
-          <Icon
-            as={colorSet ? AiTwotoneHeart : AiOutlineHeart}
-            w={6}
-            h={6}
-            ml="20px"
-            overflow="hidden"
-            color={colorSet ? "red" : null}
-            onClick={handleIconClick}
-            className="heart"
-          />
+          {cart.some((p) => p.id === elem.id) ? (
+            <button
+              onClick={() => {
+                dispatch({
+                  type: "REMOVE_FROM_CART",
+                  payload: elem,
+                });
+                toast({
+                  title: "Removed from favotites successfully !!",
+                  status: "info",
+                  duration: 1500,
+                  isClosable: true,
+                  position: "top",
+                });
+              }}
+            >
+              <AiTwotoneHeart color="red" fontSize="27px" />
+            </button>
+          ) : (
+            <button
+              onClick={() => {
+                dispatch({
+                  type: "ADD_TO_CART",
+                  payload: elem,
+                });
+                toast({
+                  title: "Added to favorites successfully !!",
+                  status: "success",
+                  duration: 1500,
+                  isClosable: true,
+                  position: "top",
+                });
+              }}
+            >
+              <AiOutlineHeart fontSize="25px" />
+            </button>
+          )}
         </Flex>
         <Link to={`/detail-page/${id}`}>
           <Box h="20px" d="flex" alignItems="baseline">
