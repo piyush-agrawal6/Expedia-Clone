@@ -237,7 +237,7 @@ const Navbar = () => {
                   fontSize={17}
                 >
                   <Text _hover={{ color: hoverColor }} >
-                    <Link to="/language" >
+                    <Link to="#" >
                       <Icon as={BiWorld} w={3.5} h={3.5} />
                       &nbsp; English
                     </Link>

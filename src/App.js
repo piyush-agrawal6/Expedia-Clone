@@ -5,6 +5,8 @@ import SignUp from "./Components/SignUp";
 import Main from "./Components/Home";
 import ListView from "./Components/List";
 import ProfileEdit from "./Components/Account";
+import Favourite from "./Components/FavList";
+import DetailCard from "./Components/DetailCard";
 import { Routes, Route } from "react-router-dom";
 function App() {
   return (
@@ -15,8 +17,10 @@ function App() {
         <Route path="/signup" element={<SignUp />}></Route>
         <Route path="/account" element={<ProfileEdit />}></Route>
         <Route path="/stays" element={<ListView />}></Route>
+        <Route path="/detail-page/:id" element={<DetailCard />}></Route>
         <Route path="/stays/:cityName" element={<ListView />}></Route>
         <Route path="/" element={<Main />}></Route>
+        <Route path="/favourite" element={<Favourite />}></Route>
       </Routes>
       <Footer />
     </>
