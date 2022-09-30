@@ -15,6 +15,8 @@ import {
   RadioGroup,
   Select,
   Spinner,
+  Button,
+  Text,
 } from "@chakra-ui/react";
 import { Card } from "./HotelCard";
 import { citiesData } from "../Data";
@@ -22,12 +24,12 @@ import { useParams } from "react-router-dom";
 const initialData = citiesData;
 function ListView() {
   const [arr, setArr] = useState(initialData);
+  const [search, setSearch] = useState("");
   const [isLoading, setIsLoading] = useState(true);
-  const { cityName } = useParams();
+  let { cityName } = useParams();
   let data = initialData.filter((elem) => {
     if (elem.place == cityName.toLowerCase().trim()) return elem;
   });
-  console.log(data);
   const handleSort = (e) => {
     const { value } = e.target;
     if (value === "sort by rating") {
@@ -76,7 +78,57 @@ function ListView() {
       });
       setArr([...a]);
       setIsLoading(false);
+    } else if (value === "2000") {
+      let a = data.filter((elem) => {
+        if (+elem.offerPrice < 2000) return elem;
+      });
+      setArr([...a]);
+      setIsLoading(false);
+    } else if (value === "4000") {
+      let a = data.filter((elem) => {
+        if (+elem.offerPrice > 2000 && +elem.offerPrice < 4000) return elem;
+      });
+      setArr([...a]);
+      setIsLoading(false);
+    } else if (value === "8000") {
+      let a = data.filter((elem) => {
+        if (+elem.offerPrice > 4000 && +elem.offerPrice < 8000) return elem;
+      });
+      setArr([...a]);
+      setIsLoading(false);
+    } else if (value === "9000") {
+      let a = data.filter((elem) => {
+        if (+elem.offerPrice > 8000 && +elem.offerPrice < 11000) return elem;
+      });
+      setArr([...a]);
+      setIsLoading(false);
+    } else if (value === "11000") {
+      let a = data.filter((elem) => {
+        if (+elem.offerPrice > 11000) return elem;
+      });
+      setArr([...a]);
+      setIsLoading(false);
     }
+  };
+  const handleSearch = (e) => {
+    if (
+      search.toLowerCase().trim() == "goa" ||
+      search.toLowerCase().trim() == "bengaluru" ||
+      search.toLowerCase().trim() == "jammu"
+    ) {
+      setIsLoading(true);
+      e.preventDefault();
+      let searchResult = initialData.filter((elem) => {
+        if (elem.place == search.toLowerCase().trim()) return elem;
+      });
+      setTimeout(() => {
+        setIsLoading(false);
+      }, 500);
+      setArr([...searchResult]);
+    }
+  };
+  const handleChange = (e) => {
+    setSearch(e.target.value);
   };
   const [isLargerThan768] = useMediaQuery("(min-width: 768px)");
   const [isLargerThan492] = useMediaQuery("(min-width: 492px)");
@@ -107,18 +159,27 @@ function ListView() {
                     <Heading as="h6" size="md" mt={5} mb={5}>
                       Search by city name
                     </Heading>
+                    <Text pb={4} w="90%" color="blue.500">
+                      **Search will only work for Goa , Jammu and Bengaluru**
+                    </Text>
                     <InputGroup>
                       <InputLeftElement
                         pointerEvents="none"
                         children={<Search2Icon color="black" />}
                       />
                       <Input
-                        w="80%"
+                        w="65%"
                         type="text"
                         backgroundColor="white"
-                        placeholder="Eg. Goa , Jammu ."
+                        placeholder="e.g.  Jammu , Bengaluru"
                         borderColor="black"
+                        mr="1"
+                        value={search}
+                        onChange={handleChange}
                       />
+                      <Button p="3" colorScheme="blue" onClick={handleSearch}>
+                        search
+                      </Button>
                     </InputGroup>
                   </Box>
                   <Box w="100%" align="left" mt={7} mb={5}>
@@ -172,55 +233,49 @@ function ListView() {
                       Price per night
                     </Heading>
                     <RadioGroup>
-                      <Stack>
+                      <Stack onChange={(e) => handleFilter(e)}>
                         <Radio
                           backgroundColor="white"
-                          value="1"
+                          value="2000"
                           size="md"
                           borderColor="black"
                         >
-                          Less than 2000 rs
+                          Less than ₹2000
                         </Radio>
                         <Radio
                           backgroundColor="white"
-                          value="2"
+                          value="4000"
                           size="md"
                           borderColor="black"
                         >
-                          Less than 4000 rs
+                          ₹2000 to ₹4000
                         </Radio>
                         <Radio
                           backgroundColor="white"
-                          value="3"
+                          value="8000"
                           size="md"
                           borderColor="black"
                         >
-                          Less than 8000 rs
+                          ₹4000 to ₹8000
                         </Radio>
                         <Radio
                           backgroundColor="white"
-                          value="4"
+                          value="9000"
                           size="md"
                           borderColor="black"
                         >
-                          Greater than 8000 rs
+                          ₹8000 to ₹11000
+                        </Radio>
+                        <Radio
+                          backgroundColor="white"
+                          value="11000"
+                          size="md"
+                          borderColor="black"
+                        >
+                          Greater than ₹11000
                         </Radio>
                       </Stack>
                     </RadioGroup>
-                  </Box>
-                  <Box w="100%" align="left" mt={6} mb={7}>
-                    <Heading size="md" mb={3}>
-                      Payment Type
-                    </Heading>
-                    <Stack direction="column">
-                      <Checkbox borderColor="black">Fully refundable</Checkbox>
-                      <Checkbox borderColor="black">
-                        Reserve now, pay later
-                      </Checkbox>
-                      <Checkbox borderColor="black">
-                        Reserve without a credit card
-                      </Checkbox>
-                    </Stack>
                   </Box>
                 </Box>
               ) : null}
@@ -247,7 +302,10 @@ function ListView() {
                     gap={4}
                   >
                     {arr.map((elem) => {
-                      if (elem.place == cityName.toLowerCase().trim())
+                      if (
+                        elem.place == cityName.toLowerCase().trim() ||
+                        elem.place == search.toLowerCase().trim()
+                      )
                         return <Card key={elem.id} data={elem} />;
                     })}
                   </Flex>
