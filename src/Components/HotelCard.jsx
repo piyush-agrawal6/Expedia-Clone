@@ -12,58 +12,19 @@ import {
   Icon,
   useToast,
   Flex,
-  Spinner,
 } from "@chakra-ui/react";
-
+let fav = JSON.parse(localStorage.getItem("fav")) || [];
 export const Card = ({ data }) => {
   const [isFav, setIsFav] = useState(false);
   const [colorSet, setColorSet] = useState(false);
   const BoxShadow = "base";
   const toast = useToast();
-  // const handleIconClick = () => {
-  //   {
-  //     isLoginObj.token !== ""
-  //       ? isFav
-  //         ? axios
-  //             .put(`${API()}/favourite`, {
-  //               userId: isLoginObj.user._id,
-  //               hotelId: _id,
-  //             })
-  //             .then((res) => {
-  //               toast({
-  //                 title: "Remove From Favourite !!!",
-  //                 status: "warning",
-  //                 duration: 2000,
-  //                 isClosable: true,
-  //                 position: "top",
-  //               });
-  //               setColorSet(false);
-  //             })
-  //         : axios
-  //             .post(`${API()}/favourite`, {
-  //               userId: isLoginObj.user._id,
-  //               hotelId: _id,
-  //             })
-  //             .then((res) => {
-  //               toast({
-  //                 title: "Added To Favourite !!!",
-  //                 status: "success",
-  //                 duration: 2000,
-  //                 isClosable: true,
-  //                 position: "top",
-  //               });
-  //               setColorSet(true);
-  //             })
-  //       : toast({
-  //           title: "Plz Login !!!",
-  //           status: "info",
-  //           duration: 2000,
-  //           isClosable: true,
-  //           position: "top",
-  //         });
-  //   }
-  //   setIsFav(!isFav);
-  // };
+  const handleIconClick = () => {
+    fav.push(data);
+    localStorage.setItem("fav", JSON.stringify(fav));
+    let heart = document.querySelector(".heart")
+    heart.style.backgroundColor="red"
+  };
   const {
     id,
     images,
@@ -111,27 +72,33 @@ export const Card = ({ data }) => {
             alignItems="center"
           >
             {hotelName}
-            <Icon
-              as={colorSet ? AiTwotoneHeart : AiOutlineHeart}
-              w={6}
-              h={6}
-              ml="20px"
-              overflow="hidden"
-              color={colorSet ? "red" : null}
-              // onClick={handleIconClick}
-            />
           </Box>
+        </Link>
 
+        <Flex align="center">
+          <Badge
+            borderRadius="full"
+            colorScheme="blue"
+            mt="2"
+            mb="2"
+            padding="5px 10px"
+          >
+            {city}
+          </Badge>
+
+          <Icon
+            as={colorSet ? AiTwotoneHeart : AiOutlineHeart}
+            w={6}
+            h={6}
+            ml="20px"
+            overflow="hidden"
+            color={colorSet ? "red" : null}
+            onClick={handleIconClick}
+            className="heart"
+          />
+        </Flex>
+        <Link to={`/detail-page/${id}`}>
           <Box h="20px" d="flex" alignItems="baseline">
-            <Badge
-              borderRadius="full"
-              colorScheme="blue"
-              mt="2"
-              mb="2"
-              padding="5px 10px"
-            >
-              {city}
-            </Badge>
             <Spacer />
             <Box
               color="gray.500"

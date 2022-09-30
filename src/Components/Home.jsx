@@ -97,12 +97,21 @@ function Main() {
           isClosable: true,
           position: "top",
         });
-      localStorage.setItem("staySearch", JSON.stringify(stayData));
-      navigate(`/stays/${stayData.city}`);
+      if (
+        stayData.city.toLowerCase().trim() == "goa" ||
+        stayData.city.toLowerCase().trim() == "jammu" ||
+        stayData.city.toLowerCase().trim() == "bengaluru"
+      ) {
+        localStorage.setItem("staySearch", JSON.stringify(stayData));
+        navigate(`/stays/${stayData.city}`);
+      }
     };
 
     return (
       <>
+        <Text pb={4} w="90%" color="blue.500">
+          **Search will only work for Goa , Jammu and Bengaluru**
+        </Text>
         <Flex
           flexWrap="wrap"
           justify="space-between"
@@ -118,7 +127,7 @@ function Main() {
               onChange={(e) => {
                 onChangeInput(e);
               }}
-              placeholder="Enter a location e.g.Goa,Bengaluru,Jammu"
+              placeholder="Enter City Name"
             />
           </InputGroup>
           <InputGroup>
