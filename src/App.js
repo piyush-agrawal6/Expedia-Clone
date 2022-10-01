@@ -7,7 +7,10 @@ import ListView from "./Components/List";
 import ProfileEdit from "./Components/Account";
 import Favourite from "./Components/FavList";
 import DetailCard from "./Components/DetailCard";
+import NotFound from "./Components/PageNotFound";
 import { Routes, Route } from "react-router-dom";
+import Maintainance from "./Components/Maintainance";
+import Payment from "./Components/Payment";
 function App() {
   return (
     <>
@@ -21,6 +24,10 @@ function App() {
         <Route path="/stays/:cityName" element={<ListView />}></Route>
         <Route path="/" element={<Main />}></Route>
         <Route path="/favourite" element={<Favourite />}></Route>
+        <Route path="*" element={<NotFound />}></Route>
+        <Route path="/feedback" element={<Maintainance />}></Route>
+        <Route path="/support" element={<Maintainance />}></Route>
+        <Route path="/payment/:id" element={<Payment />}></Route>
       </Routes>
       <Footer />
     </>

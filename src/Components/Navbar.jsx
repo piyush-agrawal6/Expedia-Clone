@@ -236,20 +236,14 @@ const Navbar = () => {
                   p="1"
                   fontSize={17}
                 >
-                  <Text _hover={{ color: hoverColor }} >
-                    <Link to="#" >
+                  <Text _hover={{ color: hoverColor }}>
+                    <Link to="#">
                       <Icon as={BiWorld} w={3.5} h={3.5} />
                       &nbsp; English
                     </Link>
                   </Text>
                   <Text _hover={{ color: hoverColor }}>
-                    <a
-                      href="https://www.expedia.co.in/service/"
-                      target="_blank"
-                      rel="noreferrer"
-                    >
-                      Support
-                    </a>
+                    <Link to="/support">Support</Link>
                   </Text>
                   <Text
                     cursor="pointer"
