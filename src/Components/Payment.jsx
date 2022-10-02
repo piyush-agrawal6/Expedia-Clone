@@ -102,7 +102,7 @@ function Payment() {
     }
   }
   const nights = d1[1] == d2[1] ? c1 : c2;
-  const totalPrice = nights * data[0].offerPrice + 1200;
+  const totalPrice = stayData.room * nights * data[0].offerPrice + 1200;
   const initialPayData = {
     userName: userData.firstName + " " + userData.lastName,
     contact: "",
@@ -142,6 +142,7 @@ function Payment() {
       position: "top",
     });
   };
+  const datas = JSON.parse(localStorage.getItem("payData")) || [];
   const handlePayment = (e) => {
     if (payData.otp == "0931") {
       toast({
@@ -152,7 +153,8 @@ function Payment() {
         isClosable: true,
         position: "top",
       });
-      localStorage.setItem("payData", JSON.stringify(payData));
+      datas.push(payData);
+      localStorage.setItem("payData", JSON.stringify(datas));
       onClose();
     } else {
       toast({
@@ -398,7 +400,7 @@ function Payment() {
                   {nights} {nights > 1 ? "Nights" : "Night"}
                 </Text>
                 <Spacer></Spacer>
-                <Text>₹ {nights * hotelData.offerPrice}</Text>
+                <Text>₹ {stayData.room * nights * hotelData.offerPrice}</Text>
               </Flex>
               <Flex w="full" p="3" boxShadow="base">
                 <Text>Taxes and service fees </Text>

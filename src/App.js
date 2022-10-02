@@ -11,6 +11,8 @@ import NotFound from "./Components/PageNotFound";
 import { Routes, Route } from "react-router-dom";
 import Maintainance from "./Components/Maintainance";
 import Payment from "./Components/Payment";
+import Trips from "./Components/Trips";
+import PrivateRoute from "./Components/PrivateRoute";
 function App() {
   return (
     <>
@@ -23,11 +25,33 @@ function App() {
         <Route path="/detail-page/:id" element={<DetailCard />}></Route>
         <Route path="/stays/:cityName" element={<ListView />}></Route>
         <Route path="/" element={<Main />}></Route>
-        <Route path="/favourite" element={<Favourite />}></Route>
+        <Route
+          path="/favourite"
+          element={
+            <PrivateRoute>
+              <Favourite />
+            </PrivateRoute>
+          }
+        ></Route>
         <Route path="*" element={<NotFound />}></Route>
         <Route path="/feedback" element={<Maintainance />}></Route>
         <Route path="/support" element={<Maintainance />}></Route>
-        <Route path="/payment/:id" element={<Payment />}></Route>
+        <Route
+          path="/trips"
+          element={
+            <PrivateRoute>
+              <Trips />
+            </PrivateRoute>
+          }
+        ></Route>
+        <Route
+          path="/payment/:id"
+          element={
+            <PrivateRoute>
+              <Payment />
+            </PrivateRoute>
+          }
+        ></Route>
       </Routes>
       <Footer />
     </>
