@@ -17,9 +17,11 @@ function Favourite() {
         m="auto"
         p={6}
       >
-        {cart.map((elem) => (
-          <Card key={elem.id} elem={elem} />
-        ))}
+        {cart.length > 0 ? (
+          cart.map((elem) => <Card key={elem.id} elem={elem} />)
+        ) : (
+          <Heading>You haven't added anything to favorites yet.</Heading>
+        )}
       </Stack>
     </Box>
   );

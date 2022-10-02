@@ -173,13 +173,13 @@ const text = () => {
                               </Flex>
                             </Flex>
                           </FormControl>
-                          {/* <InputGroup p={3}>
+                          <InputGroup p={3}>
                              <InputLeftAddon children="+91" />
                              <InputGroup
                                type="tel"
                                placeholder="phone number"
                              />
-                           </InputGroup> */}
+                           </InputGroup>
                         </Flex>
                       </Box>
                     </Flex>
